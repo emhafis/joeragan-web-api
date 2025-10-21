@@ -9,7 +9,7 @@ class Property extends Model
 {
   protected $fillable = [
     'name',
-    'slug',
+    //'slug',
     'category',
     'address',
     'land_area',
@@ -31,20 +31,40 @@ class Property extends Model
     return $this->hasMany(PropertyImage::class);
   }
 
-  protected static function boot()
+  protected static function booted()
   {
-    parent::boot();
-
+    // Saat membuat property baru
     static::creating(function ($property) {
-      if (empty($property->slug)) {
-        $property->slug = Str::slug($property->name);
-      }
+      $property->slug = self::generateUniqueSlug($property->name);
     });
 
+    // Saat mengupdate property
     static::updating(function ($property) {
       if ($property->isDirty('name')) {
-        $property->slug = Str::slug($property->name);
+        $property->slug = self::generateUniqueSlug($property->name, $property->id);
       }
     });
+  }
+
+  /**
+   * Generate slug unik berdasarkan nama property.
+   */
+  protected static function generateUniqueSlug($name, $ignoreId = null)
+  {
+    $slug = Str::slug($name);
+    $originalSlug = $slug;
+    $count = 2;
+
+    // Pastikan slug unik
+    while (
+      Property::where('slug', $slug)
+      ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+      ->exists()
+    ) {
+      $slug = "{$originalSlug}-{$count}";
+      $count++;
+    }
+
+    return $slug;
   }
 }

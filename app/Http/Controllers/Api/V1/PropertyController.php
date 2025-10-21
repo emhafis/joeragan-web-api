@@ -113,6 +113,10 @@ class PropertyController extends Controller
                 ->store('property-images', 'public');
         }
 
+        if (isset($validated['name'])) {
+            $property->slug = Property::generateUniqueSlug($validated['name'], $property->id);
+        }
+
         $property->update($validated);
 
         // Ganti semua gambar jika dikirim ulang

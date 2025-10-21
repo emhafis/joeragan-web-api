@@ -21,11 +21,11 @@ class UpdatePropertyRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('property')->id ?? null;
+        // $id = $this->route('property')->id ?? null;
 
         return [
             'name' => 'sometimes|string|max:255',
-            'slug' => 'sometimes|string|max:255|unique:properties,slug,' . $id,
+            // 'slug' => 'sometimes|string|max:255|unique:properties,slug,' . $id,
             'address' => 'sometimes|string|max:255',
             'category' => 'nullable|string|in:kosan,residence',
             'description' => 'nullable|string',

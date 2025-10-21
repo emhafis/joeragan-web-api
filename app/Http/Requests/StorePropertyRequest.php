@@ -23,7 +23,7 @@ class StorePropertyRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:properties,slug',
+            // 'slug' => 'nullable|string|unique:properties,slug',
             'category' => 'nullable|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'nullable|string',
