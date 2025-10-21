@@ -14,35 +14,41 @@ class ProjectImageSeeder extends Seeder
      */
     public function run(): void
     {
-        // Pastikan sudah ada data di tabel properties
+        // Ambil semua data project
         $projects = Project::all();
 
         if ($projects->isEmpty()) {
-            $this->command->warn('Cannot found properties data. Run PropertySeeder.');
+            $this->command->warn('⚠️ Tidak ditemukan data Project. Jalankan ProjectSeeder terlebih dahulu.');
             return;
         }
 
+        // Daftar contoh gambar (bebas kamu ganti)
+        $imageLinks = [
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
+            'https://images.unsplash.com/photo-1572120360610-d971b9b78825',
+            'https://images.unsplash.com/photo-1599423300746-b62533397364',
+            'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2',
+            'https://images.unsplash.com/photo-1570129477492-45c003edd2be',
+        ];
+
+        // Kategori tetap untuk setiap project
+        $categories = ['before', 'progress', 'after'];
+
         foreach ($projects as $project) {
-            // Contoh link gambar nyata (bisa kamu ganti dengan link CDN atau storage lokal)
-            $imageLinks = [
-                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-                'https://images.unsplash.com/photo-1572120360610-d971b9b78825',
-                'https://images.unsplash.com/photo-1599423300746-b62533397364',
-                'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2',
-                'https://images.unsplash.com/photo-1570129477492-45c003edd2be',
-            ];
+            foreach ($categories as $category) {
+                // Tentukan jumlah gambar acak per kategori
+                $count = rand(2, 4);
 
-            // Set jumlah gambar per property (acak 2–4 gambar)
-            $count = rand(2, 4);
-
-            foreach (array_slice($imageLinks, 0, $count) as $imageLink) {
-                ProjectImage::create([
-                    'project_id' => $project->id,
-                    'image_path' => $imageLink,
-                ]);
+                foreach (array_slice($imageLinks, 0, $count) as $imageLink) {
+                    ProjectImage::create([
+                        'project_id' => $project->id,
+                        'category'   => $category,
+                        'image_path' => $imageLink,
+                    ]);
+                }
             }
         }
 
-        $this->command->info('PropertyImageSeeder successfully added.');
+        $this->command->info('✅ ProjectImageSeeder berhasil menambahkan gambar untuk setiap kategori (before, progress, after).');
     }
 }

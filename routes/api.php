@@ -12,6 +12,7 @@ Route::post('logout', LogoutController::class)->middleware('auth:sanctum');
 
 Route::get('projects', [ProjectController::class, 'index']);
 Route::get('properties', [PropertyController::class, 'index']);
+Route::get('/property/{slug}', [PropertyController::class, 'showBySlug']);
 
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('property', [PropertyController::class, 'store']);

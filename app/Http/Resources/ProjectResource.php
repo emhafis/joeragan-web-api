@@ -23,7 +23,10 @@ class ProjectResource extends JsonResource
             'description' => $this->description,
             'client_name' => $this->client_name,
             'featured_image' => $this->featured_image,
-            'images' => $this->images->pluck('image_path'),
+            'images' => $this->images
+                ->groupBy('category')
+                ->map(fn($group) => $group->pluck('image_path'))
+                ->toArray(),
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }

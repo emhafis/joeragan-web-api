@@ -17,7 +17,7 @@ class PropertyController extends Controller
      */
     public function index(): JsonResponse
     {
-        $properties = Property::latest()->paginate(5);
+        $properties = Property::latest()->get();
 
         return response()->json(
             [
@@ -27,6 +27,33 @@ class PropertyController extends Controller
             ]
         );
     }
+
+    public function showBySlug($slug): JsonResponse
+    {
+        // Ambil property berdasarkan slug, beserta relasi images
+        $property = Property::with('images')->where('slug', $slug)->first();
+
+        // Jika tidak ditemukan
+        if (!$property) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Property not found.'
+                ],
+                404
+            );
+        }
+
+        // Jika ditemukan, kembalikan data
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Property retrieved successfully.',
+                'data' => new PropertyResource($property),
+            ]
+        );
+    }
+
 
     /**
      * Store a newly created resource in storage.

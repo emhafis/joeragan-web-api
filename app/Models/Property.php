@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
@@ -25,7 +26,25 @@ class Property extends Model
     'facilities' => 'array',
   ];
 
-  public function images() {
+  public function images()
+  {
     return $this->hasMany(PropertyImage::class);
+  }
+
+  protected static function boot()
+  {
+    parent::boot();
+
+    static::creating(function ($property) {
+      if (empty($property->slug)) {
+        $property->slug = Str::slug($property->name);
+      }
+    });
+
+    static::updating(function ($property) {
+      if ($property->isDirty('name')) {
+        $property->slug = Str::slug($property->name);
+      }
+    });
   }
 }
