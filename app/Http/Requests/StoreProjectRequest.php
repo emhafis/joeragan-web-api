@@ -23,13 +23,17 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:properties,slug',
+            'slug' => 'nullable|string|unique:projects,slug',
             'category' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'client_name' => 'nullable|string|max:255',
             'featured_image' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
-            'images.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
+
+            // 🧩 validasi untuk struktur nested images[category][]
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|array',
+            'images.*.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
         ];
     }
 }

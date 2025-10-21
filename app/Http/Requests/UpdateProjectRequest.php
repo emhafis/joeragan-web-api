@@ -24,14 +24,18 @@ class UpdateProjectRequest extends FormRequest
         $id = $this->route('project')->id ?? null;
 
         return [
-            'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:properties,slug,' . $id,
+            'title' => 'sometimes|string|max:255',
+            'slug' => 'nullable|string|unique:projects,slug,' . $id,
             'category' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'client_name' => 'nullable|string|max:255',
             'featured_image' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
-            'images.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
+
+            // Struktur nested images seperti store
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|array',
+            'images.*.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/heic,image/heif|max:2048',
         ];
     }
 }

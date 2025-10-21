@@ -33,6 +33,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
+        // Simpan featured image
         if ($request->hasFile('featured_image')) {
             $validated['featured_image'] = $request
                 ->file('featured_image')
@@ -41,17 +42,23 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('project-images', 'public');
-                $project->images()->create(['image_path' => $path]);
+        // Simpan gambar per kategori
+        if ($request->has('images')) {
+            foreach ($request->file('images') as $category => $files) {
+                foreach ($files as $file) {
+                    $path = $file->store('project-images', 'public');
+                    $project->images()->create([
+                        'image_path' => $path,
+                        'category' => $category,
+                    ]);
+                }
             }
         }
 
         return response()->json([
             'success' => true,
             'massage' => 'Project created successfully.',
-            'data' => new ProjectResource($project->load('images'))
+            'data' => new ProjectResource($project->load('images')),
         ]);
     }
 
@@ -66,10 +73,11 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project): JsonResponse
     {
         $validated = $request->validated();
 
+        // Update featured image jika ada file baru
         if ($request->hasFile('featured_image')) {
             if ($project->featured_image && Storage::disk('public')->exists($project->featured_image)) {
                 Storage::disk('public')->delete($project->featured_image);
@@ -80,27 +88,37 @@ class ProjectController extends Controller
                 ->store('project-images', 'public');
         }
 
-        $project->update($validated);
+        // Gunakan fill() agar event updating terpicu (misal jika kamu auto-slug)
+        $project->fill($validated);
+        $project->save();
 
-        // Ganti semua gambar jika dikirim ulang
-        if ($request->hasFile('images')) {
-            // Hapus file lama
-            foreach ($project->images as $img) {
-                if (Storage::disk('public')->exists($img->image_path)) {
-                    Storage::disk('public')->delete($img->image_path);
+        // ✅ Update gambar per kategori
+        if ($request->has('images')) {
+            foreach ($request->file('images') as $category => $files) {
+
+                // Hapus gambar lama untuk kategori ini saja
+                $oldImages = $project->images()->where('category', $category)->get();
+                foreach ($oldImages as $img) {
+                    if (Storage::disk('public')->exists($img->image_path)) {
+                        Storage::disk('public')->delete($img->image_path);
+                    }
+                    $img->delete();
                 }
-            }
-            $project->images()->delete();
 
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('project-images', 'public');
-                $project->images()->create(['image_path' => $path]);
+                // Simpan file baru untuk kategori ini
+                foreach ($files as $file) {
+                    $path = $file->store('project-images', 'public');
+                    $project->images()->create([
+                        'image_path' => $path,
+                        'category' => $category,
+                    ]);
+                }
             }
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Property updated successfully.',
+            'message' => 'Project updated successfully.',
             'data' => new ProjectResource($project->load('images')),
         ]);
     }
