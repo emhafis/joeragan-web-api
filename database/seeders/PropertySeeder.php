@@ -15,9 +15,9 @@ class PropertySeeder extends Seeder
     {
         $properties = [
             [
-                'name' => 'Kosan Putri Mawar Indah',
+                'name' => 'Joeragan Kosan 1',
                 'slug' => Str::slug('Kosan Putri Mawar Indah'),
-                'address' => 'Jl. Melati No. 12, Sleman, Yogyakarta',
+                'address' => 'Area Lingkar Kampus Darussalam (Blang Krueng)',
                 'category' => 'kosan',
                 'description' => 'Kosan eksklusif untuk putri, lokasi strategis dekat kampus UGM dan UNY.',
                 'land_area' => 120,
@@ -29,9 +29,9 @@ class PropertySeeder extends Seeder
                 'featured_image' => null,
             ],
             [
-                'name' => 'Kosan Putra Griya Bahagia',
+                'name' => 'Joeragan Kosan 2',
                 'slug' => Str::slug('Kosan Putra Griya Bahagia'),
-                'address' => 'Jl. Kaliurang Km 5, Sleman, Yogyakarta',
+                'address' => 'Area Lingkar Kampus Darussalam (Blang Krueng)',
                 'category' => 'kosan',
                 'description' => 'Kosan nyaman untuk mahasiswa, dekat kampus dan area kuliner.',
                 'land_area' => 150,
@@ -43,9 +43,9 @@ class PropertySeeder extends Seeder
                 'featured_image' => null,
             ],
             [
-                'name' => 'Afaris Residence Condong Catur',
+                'name' => 'Joeragan Kosan 3',
                 'slug' => Str::slug('Afaris Residence Condong Catur'),
-                'address' => 'Jl. Anggrek No. 9, Condong Catur, Sleman',
+                'address' => 'Area Strategis Kajhu (Dekat Pintu Tol Darussalam)',
                 'category' => 'residence',
                 'description' => 'Hunian modern dengan fasilitas lengkap dan keamanan 24 jam.',
                 'land_area' => 300,
@@ -57,9 +57,9 @@ class PropertySeeder extends Seeder
                 'featured_image' => null,
             ],
             [
-                'name' => 'Kosan Putri Melati Asri',
+                'name' => 'Joeragan Kosan 4',
                 'slug' => Str::slug('Kosan Putri Melati Asri'),
-                'address' => 'Jl. Cendana No. 5, Depok, Sleman',
+                'address' => 'Area Lingkar Kampus Darussalam (Blang Krueng)',
                 'category' => 'kosan',
                 'description' => 'Kosan khusus putri dengan suasana tenang dan nyaman.',
                 'land_area' => 100,
@@ -71,9 +71,9 @@ class PropertySeeder extends Seeder
                 'featured_image' => null,
             ],
             [
-                'name' => 'Griya Harmoni Residence',
+                'name' => 'Joeragan Kosan 5',
                 'slug' => Str::slug('Griya Harmoni Residence'),
-                'address' => 'Jl. Kenanga No. 15, Bantul, Yogyakarta',
+                'address' => 'Area Lingkar Kampus Darussalam (Blang Krueng)',
                 'category' => 'residence',
                 'description' => 'Rumah siap huni dengan desain minimalis dan lingkungan asri.',
                 'land_area' => 250,
