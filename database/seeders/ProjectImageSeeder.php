@@ -32,7 +32,7 @@ class ProjectImageSeeder extends Seeder
         ];
 
         // Kategori tetap untuk setiap project
-        $categories = ['before', 'progress', 'after'];
+        $categories = ['before', 'design', 'after'];
 
         foreach ($projects as $project) {
             foreach ($categories as $category) {
