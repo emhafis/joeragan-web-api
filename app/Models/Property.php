@@ -67,4 +67,14 @@ class Property extends Model
 
     return $slug;
   }
+
+  public function scopeAvailableFirst($query)
+  {
+    return $query->orderByRaw("
+        CASE 
+            WHEN status = 'available' THEN 1 
+            ELSE 2 
+        END
+    ");
+  }
 }

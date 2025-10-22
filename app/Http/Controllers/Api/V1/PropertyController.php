@@ -17,7 +17,7 @@ class PropertyController extends Controller
      */
     public function index(): JsonResponse
     {
-        $properties = Property::latest()->get();
+        $properties = Property::availableFirst()->latest()->get();
 
         return response()->json(
             [
